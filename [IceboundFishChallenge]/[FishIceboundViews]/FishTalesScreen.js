@@ -142,10 +142,12 @@ const FishTalesScreen = () => {
           </TouchableOpacity>
         </View>
 
-        <Image
-          source={require('../IceboundFishChallengeAssets/images/IceboundFishChallengeTalesGirl.png')}
-          style={styles.characterArtIcebound}
-        />
+        <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+          <Image
+            source={require('../IceboundFishChallengeAssets/images/IceboundFishChallengeTalesGirl.png')}
+            style={styles.characterArtIcebound}
+          />
+        </View>
       </ScrollView>
     </ImageBackground>
   );
@@ -210,6 +212,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
+    zIndex: 10,
   },
   iconControlIcebound: {
     width: 34,
@@ -238,11 +241,9 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
   },
   characterArtIcebound: {
-    position: 'absolute',
-    bottom: 0,
-    left: 20,
-    height: 320,
+    height: 260,
     resizeMode: 'contain',
+    marginTop: 40,
   },
 });
 

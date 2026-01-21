@@ -74,6 +74,7 @@ const ChallengeOnboardScreen = () => {
               borderRadius: 6,
               width: '80%',
               marginBottom: 60,
+              zIndex: 5,
             }}
           >
             <LinearGradient
@@ -173,6 +174,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     borderColor: '#14243E',
+    zIndex: 10,
   },
   iceBoundStartButtonText: {
     color: fff,

@@ -172,7 +172,7 @@ const FishLevelsScreen = () => {
           <View
             style={[
               styles.headerWrapperIcebound,
-              { paddingTop: height * 0.07 },
+              { paddingTop: height * 0.05 },
             ]}
           >
             <LinearGradient
@@ -261,7 +261,7 @@ const FishLevelsScreen = () => {
           <View
             style={[
               styles.headerWrapperIcebound,
-              { paddingTop: height * 0.07 },
+              { paddingTop: height * 0.05 },
             ]}
           >
             <LinearGradient
@@ -282,7 +282,9 @@ const FishLevelsScreen = () => {
             </LinearGradient>
           </View>
 
-          <Text style={styles.questionTextIcebound}>
+          <Text
+            style={[styles.questionTextIcebound, { marginTop: height * 0.03 }]}
+          >
             Find all the fish. How many are there?
           </Text>
 

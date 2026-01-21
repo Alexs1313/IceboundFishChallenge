@@ -81,9 +81,7 @@ const IceboundFishChallengeRewards = () => {
             <IceboundFishChallengeButton
               buttonLabel={require('../IceboundFishChallengeAssets/images/IceboundFishChallengeHomeFind.png')}
               onPress={() =>
-                navigationIceboundRewards.navigate(
-                  'IceboundFishChallengeLevels',
-                )
+                navigationIceboundRewards.navigate('FishLevelsScreen')
               }
             />
           </View>
