@@ -1,13 +1,15 @@
 import { NavigationContainer } from '@react-navigation/native';
-import IceboundFishChallengeStack from './IceboundFishChallenge/IceboundFishChallengeNavigation/IceboundFishChallengeStack';
-import { IceboundFishChallengeContext } from './IceboundFishChallenge/IceboundFishChallengeStore/iceboundFishChallengeContext';
+import { AppContextProvider } from './[IceboundFishChallenge]/[IceboundChallengeStore]/iceboundFishChallengeContext';
+
+// nav import
+import FishAppRoutes from './[IceboundFishChallenge]/[IceboundFishNavigation]/FishAppRoutes';
 
 const App = () => {
   return (
     <NavigationContainer>
-      <IceboundFishChallengeContext>
-        <IceboundFishChallengeStack />
-      </IceboundFishChallengeContext>
+      <AppContextProvider>
+        <FishAppRoutes />
+      </AppContextProvider>
     </NavigationContainer>
   );
 };

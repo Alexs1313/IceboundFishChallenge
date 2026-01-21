@@ -9,14 +9,23 @@ import {
   Share,
   Platform,
   ScrollView,
+  useWindowDimensions,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
-import { fisherTales } from '../IceboundFishChallengeData/fisherTales';
+import { fisherTales } from '../[ChallengeData]/fisherTales';
+import { useNavigation } from '@react-navigation/native';
 
-const IceboundFishChallengeTales = ({ navigation }) => {
+const gradientColors = ['#25609B', '#64BAE1'];
+const fff = '#FFFFFF';
+const bg = require('../IceboundFishChallengeAssets/images/IceboundFishChallengeTalesBg.png');
+
+const FishTalesScreen = () => {
   const [currentIceboundTaleIndex, setCurrentIceboundTaleIndex] = useState(0);
   const [savedIceboundMap, setSavedIceboundMap] = useState({});
+  const { height } = useWindowDimensions();
+  const navigation = useNavigation();
+
   const currentTale = fisherTales[currentIceboundTaleIndex];
   const isSavedTale = savedIceboundMap[currentTale.id];
 
@@ -36,6 +45,8 @@ const IceboundFishChallengeTales = ({ navigation }) => {
     };
     if (isSavedTale) delete updatedTales[currentTale.id];
     setSavedIceboundMap(updatedTales);
+
+    console.log('load');
     await AsyncStorage.setItem(
       'FISHER_TALES_SAVED',
       JSON.stringify(updatedTales),
@@ -50,20 +61,19 @@ const IceboundFishChallengeTales = ({ navigation }) => {
 
   const handleNextTale = () => {
     setCurrentIceboundTaleIndex(prev => (prev + 1) % fisherTales.length);
+
+    console.log('next');
   };
 
   return (
-    <ImageBackground
-      source={require('../IceboundFishChallengeAssets/images/IceboundFishChallengeTalesBg.png')}
-      style={styles.screenIcebound}
-    >
+    <ImageBackground source={bg} style={styles.screenIcebound}>
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, height: 700 }}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.topWrapIcebound}>
+        <View style={[styles.topWrapIcebound, { paddingTop: height * 0.07 }]}>
           <LinearGradient
-            colors={['#25609B', '#64BAE1']}
+            colors={gradientColors}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={styles.topBarIcebound}
@@ -86,7 +96,7 @@ const IceboundFishChallengeTales = ({ navigation }) => {
           style={styles.frameOuterIcebound}
         >
           <LinearGradient
-            colors={['#25609B', '#25609B']}
+            colors={gradientColors}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={styles.frameInnerIcebound}
@@ -161,7 +171,7 @@ const styles = StyleSheet.create({
     left: 20,
   },
   topTitleIcebound: {
-    color: '#FFFFFF',
+    color: fff,
     fontSize: 22,
     fontWeight: '800',
   },
@@ -183,14 +193,14 @@ const styles = StyleSheet.create({
   taleTitleIcebound: {
     fontSize: 20,
     fontWeight: '800',
-    color: '#fff',
+    color: fff,
     marginBottom: 8,
     textAlign: 'center',
     fontStyle: 'italic',
   },
   taleBodyIcebound: {
     fontSize: 16,
-    color: '#fff',
+    color: fff,
     lineHeight: 20,
     fontStyle: 'italic',
     fontWeight: '500',
@@ -222,7 +232,7 @@ const styles = StyleSheet.create({
     borderColor: '#14243E',
   },
   nextLabelIcebound: {
-    color: '#fff',
+    color: fff,
     fontSize: 20,
     fontWeight: '700',
     fontStyle: 'italic',
@@ -236,4 +246,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default IceboundFishChallengeTales;
+export default FishTalesScreen;

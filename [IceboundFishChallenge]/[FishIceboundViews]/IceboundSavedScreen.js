@@ -8,14 +8,21 @@ import {
   ImageBackground,
   ScrollView,
   Platform,
+  useWindowDimensions,
 } from 'react-native';
-
 import LinearGradient from 'react-native-linear-gradient';
-import { useStore } from '../IceboundFishChallengeStore/iceboundFishChallengeContext';
+import { useStore } from '../[IceboundChallengeStore]/iceboundFishChallengeContext';
+import { useNavigation } from '@react-navigation/native';
 
-const IceboundFishChallengeSaved = ({ navigation }) => {
+const bgImg = require('../IceboundFishChallengeAssets/images/IceboundFishChallengeTalesBg.png');
+const gradientColors = ['#25609B', '#64BAE1'];
+const fff = '#FFFFFF';
+
+const IceboundSavedScreen = () => {
   const { storedIceboundTales, fetchSavedTales, deleteIceboundSavedTale } =
     useStore();
+  const navigation = useNavigation();
+  const { height } = useWindowDimensions();
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', fetchSavedTales);
@@ -23,19 +30,15 @@ const IceboundFishChallengeSaved = ({ navigation }) => {
   }, [navigation]);
 
   return (
-    <ImageBackground
-      source={require('../IceboundFishChallengeAssets/images/IceboundFishChallengeTalesBg.png')}
-      style={styles.screenIcebound}
-    >
+    <ImageBackground source={bgImg} style={styles.screenIcebound}>
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.topBarWrapIcebound}>
-          <LinearGradient
-            colors={['#25609B', '#64BAE1']}
-            style={styles.topBarIcebound}
-          >
+        <View
+          style={[styles.topBarWrapIcebound, { paddingTop: height * 0.07 }]}
+        >
+          <LinearGradient colors={gradientColors} style={styles.topBarIcebound}>
             <TouchableOpacity
               style={styles.navBackIcebound}
               onPress={() => navigation.goBack()}
@@ -112,7 +115,7 @@ const styles = StyleSheet.create({
     left: 20,
   },
   topTitleIcebound: {
-    color: '#fff',
+    color: fff,
     fontSize: 22,
     fontWeight: '800',
   },
@@ -147,14 +150,14 @@ const styles = StyleSheet.create({
   taleTitleIcebound: {
     fontSize: 20,
     fontWeight: '800',
-    color: '#fff',
+    color: fff,
     textAlign: 'center',
     fontStyle: 'italic',
     marginBottom: 8,
   },
   taleTextIcebound: {
     fontSize: 16,
-    color: '#fff',
+    color: fff,
     lineHeight: 20,
     fontStyle: 'italic',
     fontWeight: '500',
@@ -175,4 +178,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default IceboundFishChallengeSaved;
+export default IceboundSavedScreen;

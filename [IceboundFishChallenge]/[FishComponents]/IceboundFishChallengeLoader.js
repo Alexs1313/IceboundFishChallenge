@@ -2,19 +2,24 @@ import React, { useEffect, useState } from 'react';
 import { WebView } from 'react-native-webview';
 import { View, StyleSheet, ImageBackground, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { iceboundFishChallengeHtmlLoader } from '../IceboundFishChallengeConsts/iceboundFishChallengeHtmlLoader';
+import { iceboundFishChallengeHtmlLoader } from '../[IceboundConstants]/iceboundFishChallengeHtmlLoader';
 
 const IceboundFishChallengeLoader = () => {
   const navigation = useNavigation();
   const [isVisibleIcon, setIsVisibleIcon] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => {
+    const hideIconTimeout = setTimeout(() => {
       setIsVisibleIcon(false);
-      setTimeout(() => {
-        navigation.replace('IceboundFishChallengeOnboard');
+
+      const navigateTimeout = setTimeout(() => {
+        navigation.replace('ChallengeOnboardScreen');
       }, 2000);
+
+      return () => clearTimeout(navigateTimeout);
     }, 5000);
+
+    return () => clearTimeout(hideIconTimeout);
   }, []);
 
   return (

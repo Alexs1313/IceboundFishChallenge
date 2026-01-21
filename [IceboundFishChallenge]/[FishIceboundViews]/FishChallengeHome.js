@@ -7,14 +7,15 @@ import {
   View,
 } from 'react-native';
 
-import IceboundFishChallengeButton from '../IceboundFishChallengeComponents/IceboundFishChallengeButton';
+// custom button import
+import IceboundFishChallengeButton from '../[FishComponents]/IceboundFishChallengeButton';
 
-const IceboundFishChallengeHome = () => {
+const FishChallengeHome = () => {
   const navigation = useNavigation();
 
   return (
     <ImageBackground
-      source={require('../IceboundFishChallengeAssets/images/IceboundFishChallengeHomeBg.png')}
+      source={require('../IceboundFishChallengeAssets/images/IceboundFishChallengeTalesBg.png')}
       style={styles.screenBackgroundIcebound}
     >
       <ScrollView
@@ -30,7 +31,7 @@ const IceboundFishChallengeHome = () => {
           <View style={styles.menuButtonsWrapperIcebound}>
             <IceboundFishChallengeButton
               buttonLabel={require('../IceboundFishChallengeAssets/images/IceboundFishChallengeHomeLbl1.png')}
-              onPress={() => navigation.navigate('IceboundFishChallengeLevels')}
+              onPress={() => navigation.navigate('FishLevelsScreen')}
             />
 
             <IceboundFishChallengeButton
@@ -42,12 +43,12 @@ const IceboundFishChallengeHome = () => {
 
             <IceboundFishChallengeButton
               buttonLabel={require('../IceboundFishChallengeAssets/images/IceboundFishChallengeHomeLbl3.png')}
-              onPress={() => navigation.navigate('IceboundFishChallengeTales')}
+              onPress={() => navigation.navigate('FishTalesScreen')}
             />
 
             <IceboundFishChallengeButton
               buttonLabel={require('../IceboundFishChallengeAssets/images/IceboundFishChallengeHomeLbl4.png')}
-              onPress={() => navigation.navigate('IceboundFishChallengeSaved')}
+              onPress={() => navigation.navigate('IceboundSavedScreen')}
             />
           </View>
         </View>
@@ -77,4 +78,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default IceboundFishChallengeHome;
+export default FishChallengeHome;

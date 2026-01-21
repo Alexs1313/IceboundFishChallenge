@@ -9,13 +9,20 @@ import {
   ImageBackground,
   ScrollView,
   Share,
+  useWindowDimensions,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import { fishSearchGameLevels } from '../IceboundFishChallengeData/fishSearchGameLevels';
 
-const IceboundFishChallengeLevels = () => {
+import { fishSearchGameLevels } from '../[ChallengeData]/fishSearchGameLevels';
+
+const bgImg = require('../IceboundFishChallengeAssets/images/IceboundFishChallengeTalesBg.png');
+const gradientColors = ['#25609B', '#64BAE1'];
+const loseBg = require('../IceboundFishChallengeAssets/images/IceboundFishChallengeLoseBg.png');
+const winBg = require('../IceboundFishChallengeAssets/images/IceboundFishChallengeWinBg.png');
+
+const FishLevelsScreen = () => {
   const navigationIceboundLevels = useNavigation();
   const [currentScreenStageIcebound, setCurrentScreenStageIcebound] = useState(
     'LEVEL_SELECTION_ICEBOUND',
@@ -29,50 +36,64 @@ const IceboundFishChallengeLevels = () => {
     useState(0);
   const [noRetryWinStreakCounterIcebound, setNoRetryWinStreakCounterIcebound] =
     useState(0);
+  const { height, width } = useWindowDimensions();
+
+  const isPortraitMode = height >= width;
 
   useEffect(() => {
     loadSavedProgressIcebound();
   }, []);
 
   const loadSavedProgressIcebound = async () => {
-    const savedProgressRawIcebound = await AsyncStorage.getItem(
-      'ICEBOUND_FISH_PROGRESS',
-    );
-    if (savedProgressRawIcebound) {
-      const parsedProgressIcebound = JSON.parse(savedProgressRawIcebound);
-      setCompletedLevelsListIcebound(parsedProgressIcebound.completed || []);
-      setActiveLevelIndexIcebound(parsedProgressIcebound.currentLevel || 1);
+    try {
+      const savedProgressRawIcebound = await AsyncStorage.getItem(
+        'ICEBOUND_FISH_PROGRESS',
+      );
+      if (savedProgressRawIcebound) {
+        const parsedProgressIcebound = JSON.parse(savedProgressRawIcebound);
+        setCompletedLevelsListIcebound(parsedProgressIcebound.completed || []);
+        setActiveLevelIndexIcebound(parsedProgressIcebound.currentLevel || 1);
+      }
+    } catch (error) {
+      console.error('Failed to load icebound progress:', error);
     }
   };
 
   const unlockRewardByIdIcebound = async rewardIdentifierIcebound => {
-    const storedRewardsRawIcebound = await AsyncStorage.getItem(
-      'ICEBOUND_REWARDS',
-    );
-    const rewardsMapIcebound = storedRewardsRawIcebound
-      ? JSON.parse(storedRewardsRawIcebound)
-      : {};
-
-    if (!rewardsMapIcebound[rewardIdentifierIcebound]) {
-      rewardsMapIcebound[rewardIdentifierIcebound] = true;
-      await AsyncStorage.setItem(
+    try {
+      const storedRewardsRawIcebound = await AsyncStorage.getItem(
         'ICEBOUND_REWARDS',
-        JSON.stringify(rewardsMapIcebound),
       );
+      const rewardsMapIcebound = storedRewardsRawIcebound
+        ? JSON.parse(storedRewardsRawIcebound)
+        : {};
+
+      if (!rewardsMapIcebound[rewardIdentifierIcebound]) {
+        rewardsMapIcebound[rewardIdentifierIcebound] = true;
+        await AsyncStorage.setItem(
+          'ICEBOUND_REWARDS',
+          JSON.stringify(rewardsMapIcebound),
+        );
+      }
+    } catch (error) {
+      console.error('Failed to unlock reward:', error);
     }
   };
 
-  const persistProgressIcebound = async (
-    nextLevelIndexIcebound,
-    completedArrayIcebound,
-  ) => {
-    await AsyncStorage.setItem(
-      'ICEBOUND_FISH_PROGRESS',
-      JSON.stringify({
-        currentLevel: nextLevelIndexIcebound,
-        completed: completedArrayIcebound,
-      }),
-    );
+  const persistProgressIcebound = async (nextLevel, completedLevels) => {
+    try {
+      const progress = {
+        currentLevel: nextLevel,
+        completed: completedLevels,
+      };
+
+      await AsyncStorage.setItem(
+        'ICEBOUND_FISH_PROGRESS',
+        JSON.stringify(progress),
+      );
+    } catch (error) {
+      console.error('Error saving progress:', error);
+    }
   };
 
   const currentLevelDataIcebound = fishSearchGameLevels.find(
@@ -80,52 +101,49 @@ const IceboundFishChallengeLevels = () => {
   );
 
   const evaluateUserAnswerIcebound = async () => {
-    const isCorrectAnswerIcebound =
+    const isCorrectAnswer =
       Number(userInputAnswerIcebound) === currentLevelDataIcebound.answer;
 
-    setIsLevelWinStateIcebound(isCorrectAnswerIcebound);
+    setIsLevelWinStateIcebound(isCorrectAnswer);
 
-    if (isCorrectAnswerIcebound) {
-      const updatedCompletedLevelsIcebound = [
+    if (isCorrectAnswer) {
+      const updatedCompletedLevels = [
         ...new Set([...completedLevelsListIcebound, activeLevelIndexIcebound]),
       ];
 
-      const nextLevelIndexIcebound = Math.min(activeLevelIndexIcebound + 1, 9);
+      const nextLevelIndex = Math.min(activeLevelIndexIcebound + 1, 9);
 
-      setCompletedLevelsListIcebound(updatedCompletedLevelsIcebound);
-      persistProgressIcebound(
-        nextLevelIndexIcebound,
-        updatedCompletedLevelsIcebound,
-      );
+      setCompletedLevelsListIcebound(updatedCompletedLevels);
+      await persistProgressIcebound(nextLevelIndex, updatedCompletedLevels);
 
-      if (updatedCompletedLevelsIcebound.length >= 1)
+      if (updatedCompletedLevels.length >= 1)
         unlockRewardByIdIcebound('frozen_mark');
       if (failedAttemptsCountIcebound === 0)
         unlockRewardByIdIcebound('silent_count');
       if (
-        updatedCompletedLevelsIcebound.length >= 3 &&
+        updatedCompletedLevels.length >= 3 &&
         failedAttemptsCountIcebound === 0
-      )
+      ) {
         unlockRewardByIdIcebound('icebound_eye');
+      }
 
       if (activeLevelIndexIcebound === 4)
         unlockRewardByIdIcebound('crack_watcher');
-      if (updatedCompletedLevelsIcebound.length >= 5)
+      if (updatedCompletedLevels.length >= 5)
         unlockRewardByIdIcebound('snow_beneath');
       if (failedAttemptsCountIcebound >= 2)
         unlockRewardByIdIcebound('cold_patience');
-
       if (activeLevelIndexIcebound === 7)
         unlockRewardByIdIcebound('hidden_tail');
       if (noRetryWinStreakCounterIcebound >= 7)
         unlockRewardByIdIcebound('still_water');
-      if (updatedCompletedLevelsIcebound.length === 9)
+      if (updatedCompletedLevels.length === 9)
         unlockRewardByIdIcebound('winter_proof');
 
       setFailedAttemptsCountIcebound(0);
       setNoRetryWinStreakCounterIcebound(prevStreak => prevStreak + 1);
     } else {
-      setFailedAttemptsCountIcebound(prevAttempt => prevAttempt + 1);
+      setFailedAttemptsCountIcebound(prev => prev + 1);
       setNoRetryWinStreakCounterIcebound(0);
     }
 
@@ -146,17 +164,19 @@ const IceboundFishChallengeLevels = () => {
 
   if (currentScreenStageIcebound === 'LEVEL_SELECTION_ICEBOUND') {
     return (
-      <ImageBackground
-        source={require('../IceboundFishChallengeAssets/images/IceboundFishChallengeHomeBg.png')}
-        style={styles.screenBackgroundIcebound}
-      >
+      <ImageBackground source={bgImg} style={styles.screenBackgroundIcebound}>
         <ScrollView
           contentContainerStyle={{ flexGrow: 1, paddingBottom: 30 }}
           showsVerticalScrollIndicator={false}
         >
-          <View style={styles.headerWrapperIcebound}>
+          <View
+            style={[
+              styles.headerWrapperIcebound,
+              { paddingTop: height * 0.07 },
+            ]}
+          >
             <LinearGradient
-              colors={['#25609B', '#64BAE1']}
+              colors={gradientColors}
               style={styles.headerBarIcebound}
             >
               <TouchableOpacity
@@ -229,10 +249,7 @@ const IceboundFishChallengeLevels = () => {
 
   if (currentScreenStageIcebound === 'LEVEL_GAME_ICEBOUND') {
     return (
-      <ImageBackground
-        source={require('../IceboundFishChallengeAssets/images/IceboundFishChallengeHomeBg.png')}
-        style={styles.screenBackgroundIcebound}
-      >
+      <ImageBackground source={bgImg} style={styles.screenBackgroundIcebound}>
         <ScrollView
           contentContainerStyle={{
             flexGrow: 1,
@@ -241,9 +258,14 @@ const IceboundFishChallengeLevels = () => {
           }}
           showsVerticalScrollIndicator={false}
         >
-          <View style={styles.headerWrapperIcebound}>
+          <View
+            style={[
+              styles.headerWrapperIcebound,
+              { paddingTop: height * 0.07 },
+            ]}
+          >
             <LinearGradient
-              colors={['#25609B', '#64BAE1']}
+              colors={gradientColors}
               style={styles.headerBarIcebound}
             >
               <TouchableOpacity
@@ -275,7 +297,13 @@ const IceboundFishChallengeLevels = () => {
 
           <Image
             source={currentLevelDataIcebound.image}
-            style={styles.levelImageIcebound}
+            style={[
+              styles.levelImageIcebound,
+              {
+                height: isPortraitMode ? height * 0.55 : height * 1.5,
+                width: isPortraitMode ? width * 0.8 : width * 0.5,
+              },
+            ]}
           />
 
           <TouchableOpacity onPress={evaluateUserAnswerIcebound}>
@@ -293,11 +321,7 @@ const IceboundFishChallengeLevels = () => {
 
   return (
     <ImageBackground
-      source={
-        isLevelWinStateIcebound
-          ? require('../IceboundFishChallengeAssets/images/IceboundFishChallengeWinBg.png')
-          : require('../IceboundFishChallengeAssets/images/IceboundFishChallengeLoseBg.png')
-      }
+      source={isLevelWinStateIcebound ? winBg : loseBg}
       style={styles.screenBackgroundIcebound}
     >
       <ScrollView
@@ -484,4 +508,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default IceboundFishChallengeLevels;
+export default FishLevelsScreen;

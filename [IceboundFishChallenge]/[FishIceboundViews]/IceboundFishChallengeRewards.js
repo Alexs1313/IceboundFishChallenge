@@ -7,16 +7,22 @@ import {
   TouchableOpacity,
   ImageBackground,
   ScrollView,
+  useWindowDimensions,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import { levelRewards } from '../IceboundFishChallengeData/levelRewards';
-import IceboundFishChallengeButton from '../IceboundFishChallengeComponents/IceboundFishChallengeButton';
+import { levelRewards } from '../[ChallengeData]/levelRewards';
+import IceboundFishChallengeButton from '../[FishComponents]/IceboundFishChallengeButton';
+
+const bgImg = require('../IceboundFishChallengeAssets/images/IceboundFishChallengeTalesBg.png');
+const gradientColors = ['#25609B', '#64BAE1'];
+const fff = '#FFFFFF';
 
 const IceboundFishChallengeRewards = () => {
   const navigationIceboundRewards = useNavigation();
   const [earnedRewardsMapIcebound, setEarnedRewardsMapIcebound] = useState({});
+  const { height } = useWindowDimensions();
 
   useEffect(() => {
     loadEarnedRewardsFromStorageIcebound();
@@ -38,17 +44,19 @@ const IceboundFishChallengeRewards = () => {
   ).some(Boolean);
 
   return (
-    <ImageBackground
-      source={require('../IceboundFishChallengeAssets/images/IceboundFishChallengeHomeBg.png')}
-      style={styles.screenBackgroundIcebound}
-    >
+    <ImageBackground source={bgImg} style={styles.screenBackgroundIcebound}>
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.topHeaderWrapperIcebound}>
+        <View
+          style={[
+            styles.topHeaderWrapperIcebound,
+            { paddingTop: height * 0.07 },
+          ]}
+        >
           <LinearGradient
-            colors={['#25609B', '#64BAE1']}
+            colors={gradientColors}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={styles.topHeaderBarIcebound}
@@ -133,7 +141,7 @@ const styles = StyleSheet.create({
     left: 20,
   },
   topHeaderTitleIcebound: {
-    color: '#FFFFFF',
+    color: fff,
     fontSize: 22,
     fontWeight: '800',
   },
@@ -199,7 +207,7 @@ const styles = StyleSheet.create({
     borderRadius: 24,
   },
   primaryActionTextIcebound: {
-    color: '#FFFFFF',
+    color: fff,
     fontSize: 16,
     fontWeight: '600',
   },

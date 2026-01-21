@@ -1,12 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext, useContext, useState } from 'react';
-import { fisherTales } from '../IceboundFishChallengeData/fisherTales';
+import { fisherTales } from '../[ChallengeData]/fisherTales';
 
 export const StoreContext = createContext(undefined);
 
 export const useStore = () => useContext(StoreContext);
 
-export const IceboundFishChallengeContext = ({ children }) => {
+export const AppContextProvider = ({ children }) => {
   const [storedIceboundIds, setStoredIceboundIds] = useState({});
   const [storedIceboundTales, setStoredIceboundTales] = useState([]);
 

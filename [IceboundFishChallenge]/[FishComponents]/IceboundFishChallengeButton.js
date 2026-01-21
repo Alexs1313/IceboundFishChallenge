@@ -2,7 +2,6 @@ import {
   Image,
   Platform,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -22,9 +21,9 @@ const IceboundFishChallengeButton = ({ buttonLabel, onPress }) => {
         }}
       >
         <LinearGradient
-          colors={['#25609B', '#64BAE1']}
+          colors={['#07519bff', '#64BAE1', '#174f87ff']}
           start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
+          end={{ x: 1, y: 1 }}
           style={{
             borderRadius: 15,
             padding: Platform.OS === 'ios' ? 3 : 0,
@@ -48,7 +47,7 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
   },
   iceBoundGradContainer: {
-    height: 62,
+    height: 69,
     paddingHorizontal: 10,
     alignItems: 'center',
     justifyContent: 'center',

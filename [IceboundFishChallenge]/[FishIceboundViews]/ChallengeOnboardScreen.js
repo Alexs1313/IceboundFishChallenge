@@ -11,9 +11,13 @@ import {
   View,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { onboardBackgrounds } from '../IceboundFishChallengeConsts/onboardBackgrounds';
+import { onboardBackgrounds } from '../[IceboundConstants]/onboardBackgrounds';
 
-const IceboundFishChallengeOnboard = () => {
+const gradBorders = ['#E0F9FD', '#2974C0'];
+const gradColors = ['#25609B', '#64BAE1'];
+const fff = '#FFFFFF';
+
+const ChallengeOnboardScreen = () => {
   const [iceBoundOnboardIdx, setIceBoundOnboardIdx] = useState(0);
   const navigation = useNavigation();
 
@@ -65,7 +69,7 @@ const IceboundFishChallengeOnboard = () => {
           )}
 
           <LinearGradient
-            colors={['#E0F9FD', '#2974C0']}
+            colors={gradBorders}
             style={{
               borderRadius: 6,
               width: '80%',
@@ -73,7 +77,7 @@ const IceboundFishChallengeOnboard = () => {
             }}
           >
             <LinearGradient
-              colors={['#25609B', '#64BAE1']}
+              colors={gradColors}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
               style={{
@@ -133,7 +137,7 @@ cracks, or only show a tail.`}
                 style={styles.iceBoundStartButton}
                 onPress={() => {
                   iceBoundOnboardIdx === 3
-                    ? navigation.replace('IceboundFishChallengeHome')
+                    ? navigation.replace('FishChallengeHome')
                     : setIceBoundOnboardIdx(iceBoundOnboardIdx + 1);
                 }}
               >
@@ -171,14 +175,14 @@ const styles = StyleSheet.create({
     borderColor: '#14243E',
   },
   iceBoundStartButtonText: {
-    color: '#FFFFFF',
+    color: fff,
     fontSize: 20,
     fontWeight: 'bold',
     fontStyle: 'italic',
   },
   iceBoundOnboardText: {
     fontSize: 20,
-    color: '#FFFFFF',
+    color: fff,
     textAlign: 'center',
     fontStyle: 'italic',
   },
@@ -191,4 +195,4 @@ const styles = StyleSheet.create({
   iceBoundWelcImg: { marginBottom: 34 },
 });
 
-export default IceboundFishChallengeOnboard;
+export default ChallengeOnboardScreen;
