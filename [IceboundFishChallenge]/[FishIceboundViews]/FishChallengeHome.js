@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import {
   Image,
   ImageBackground,
+  Platform,
   ScrollView,
   StyleSheet,
   View,
@@ -23,10 +24,22 @@ const FishChallengeHome = () => {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.homeContainerIcebound}>
-          <Image
-            source={require('../IceboundFishChallengeAssets/images/IceboundFishChallengeHomeLogo.png')}
-            style={styles.homeLogoImageIcebound}
-          />
+          {Platform.OS === 'ios' ? (
+            <Image
+              source={require('../IceboundFishChallengeAssets/images/IceboundFishChallengeHomeLogo.png')}
+              style={styles.homeLogoImageIcebound}
+            />
+          ) : (
+            <Image
+              source={require('../IceboundFishChallengeAssets/images/icon.png')}
+              style={{
+                width: 290,
+                height: 240,
+                marginBottom: 54,
+                borderRadius: 50,
+              }}
+            />
+          )}
 
           <View style={styles.menuButtonsWrapperIcebound}>
             <IceboundFishChallengeButton

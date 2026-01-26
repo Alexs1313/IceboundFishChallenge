@@ -448,6 +448,7 @@ const styles = StyleSheet.create({
     marginBottom: 23,
     color: '#14243E',
     fontWeight: '700',
+    textAlign: 'center',
   },
   levelImageIcebound: {
     width: 277,
@@ -459,7 +460,8 @@ const styles = StyleSheet.create({
   },
   answerInputIcebound: {
     width: 150,
-    height: 39,
+    paddingVertical: 10,
+    paddingHorizontal: 7,
     backgroundColor: '#fff',
     borderRadius: 6,
     textAlign: 'center',

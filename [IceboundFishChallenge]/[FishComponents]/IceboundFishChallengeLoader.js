@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { WebView } from 'react-native-webview';
-import { View, StyleSheet, ImageBackground, Image } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  ImageBackground,
+  Image,
+  Platform,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { iceboundFishChallengeHtmlLoader } from '../[IceboundConstants]/iceboundFishChallengeHtmlLoader';
 
@@ -31,9 +37,21 @@ const IceboundFishChallengeLoader = () => {
         <View
           style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}
         >
-          <Image
-            source={require('../IceboundFishChallengeAssets/images/IceboundFishChallengeHomeLogo.png')}
-          />
+          {Platform.OS === 'ios' ? (
+            <Image
+              source={require('../IceboundFishChallengeAssets/images/IceboundFishChallengeHomeLogo.png')}
+            />
+          ) : (
+            <Image
+              source={require('../IceboundFishChallengeAssets/images/icon.png')}
+              style={{
+                width: 290,
+                height: 240,
+                marginBottom: 54,
+                borderRadius: 50,
+              }}
+            />
+          )}
         </View>
       ) : (
         <View style={styles.spinner}>
